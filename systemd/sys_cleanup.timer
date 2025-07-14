@@ -1,0 +1,9 @@
+[Unit]
+Description=RUn system cleanup mounthly (1st Friday)
+
+[Timer]
+OnCalendar=Fri *-*-01..07 18:10:00
+Persistent=true
+
+[Install]
+WantedBy=timers.target

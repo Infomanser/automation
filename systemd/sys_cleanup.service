@@ -1,0 +1,7 @@
+[Unit]
+Description=System cleanup script
+Wants=sys_cleanup.timer
+
+[Service]
+Type=oneshot
+ExecStart=/root/scripts/sys_cleanup.sh

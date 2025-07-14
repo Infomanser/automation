@@ -1,0 +1,6 @@
+[Unit]
+Description=System Update Script
+
+[Service]
+Type=oneshot
+ExecStart=/root/scripts/system_update.sh

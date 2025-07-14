@@ -1,0 +1,2 @@
+# Fridays backups
+30 18 * * 5 /root/scripts/backup_home.sh >> /var/log/backuper-cron.log 2>&1

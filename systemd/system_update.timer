@@ -1,0 +1,11 @@
+[Unit]
+Description=Run system_update.sh every 2 days at 20:00
+
+[Timer]
+OnCalendar=*-*-01,03,05,07,09,11,13,15,17,19,21,23,25,27,29,31 20:00:00
+AccuracySec=1h
+Persistent=true
+Unit=system_update.service
+
+[Install]
+WantedBy=timers.target
