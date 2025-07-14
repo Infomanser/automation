@@ -48,10 +48,6 @@ echo
 # Завантаження змінних середовища з .env
 source /root/scripts/.env
 
-# Відправка повідомлення у Telegram і логування відповіді
-response=$(curl -sS -X POST "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage" \
-  -d chat_id="$TELEGRAM_CHAT_ID" \
-  -d parse_mode="Markdown" \
-  -d text="$(sed 's/&/\\&/g; s/</\\</g; s/>/\\>/g' "$LOG_FILE")")
-
+# === Відправка звіту через Telegram ===
+/root/scripts/send_telegram.sh "$(cat "$LOG_FILE")" MarkdownV2
 echo "Telegram response: $response" >> "$TG_LOG"
