@@ -26,7 +26,7 @@ systemctl enable --now system_update.timer
 # --- 5. Setup cron-jobs
 echo "📆 Add tasks to cron..."
 ( crontab -l 2>/dev/null; echo "30 18 * * 5 /root/scripts/backup_home.sh >> /var/log/backuper-cron.log 2>&1" ) | sort -u | crontab -
-( crontab -l 2>/dev/null; echo "0 */4 * * * /root/scripts/health.sh >> /var/log/health-cron.log 2>&1" ) | sort -u | crontab -
+( crontab -l 2>/dev/null; echo "59 3,7,11,15,18,23 * * * /root/scripts/health.sh >> /var/log/health-cron.log 2>&1" ) | sort -u | crontab -
 
 # --- 6. Creating an .env if it missing
 ENV_FILE="/root/scripts/.env"
