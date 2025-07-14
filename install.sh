@@ -23,12 +23,30 @@ echo "⏱️  Activate the timers..."
 systemctl enable --now sys_cleanup.timer
 systemctl enable --now system_update.timer
 
-# --- 5. Setup cron-jobs
+echo "🌡️ Installing sensors and configuring..."
+
+# --- 5. Installing packages
+apt update && apt install -y lm-sensors hddtemp
+
+# --- 6. Launch automatic sensor detection
+echo "🔍 Detecting available sensors (non-interactive)..."
+yes | sensors-detect > /dev/null
+
+# --- 7. Enable module autoload (may not be required for some systems)
+systemctl enable --now kmod 2>/dev/null || true
+
+echo "🛠️ You can manually rename sensors in /etc/sensors3.conf if needed"
+echo "   Examples:"
+echo '     label temp1 "CPU:"'
+echo '     label temp2 "GPU:"'
+echo '     label temp3 "SSD:"'
+echo "   For detailed config, run: sensors-detect --auto"
+# --- 8. Setup cron-jobs
 echo "📆 Add tasks to cron..."
 ( crontab -l 2>/dev/null; echo "30 18 * * 5 /root/scripts/backup_home.sh >> /var/log/backuper-cron.log 2>&1" ) | sort -u | crontab -
 ( crontab -l 2>/dev/null; echo "59 3,7,11,15,18,23 * * * /root/scripts/health.sh >> /var/log/health-cron.log 2>&1" ) | sort -u | crontab -
 
-# --- 6. Creating an .env if it missing
+# --- 9. Creating an .env if it missing
 ENV_FILE="/root/scripts/.env"
 if [[ ! -f "$ENV_FILE" ]]; then
 	echo "🛡️  Creating an .env if it missing"
@@ -42,3 +60,10 @@ else
 fi
 
 echo "✅ Installing is done!"
+echo
+echo "📋 Active systemd timers:"
+systemctl list-timers --no-pager --all | grep -E 'sys_cleanup|system_update'
+
+echo
+echo "📋 Current crontab:"
+crontab -l
