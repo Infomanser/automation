@@ -20,8 +20,15 @@ if [ "$MODE" = "MarkdownV2" ]; then
         echo "$1" | sed -E 's/([][_*()~`>#+=|{}.!-])/\\\1/g'
     }
     TEXT=$(escape_md "$TEXT")
+elif [ "$MODE" = "HTML" ]; then
+    escape_html() {
+        echo "$1" \
+        | sed -e 's/&/\&amp;/g' \
+              -e 's/</\&lt;/g' \
+              -e 's/>/\&gt;/g'
+    }
+    TEXT=$(escape_html "$TEXT")
 fi
-
 # Відправка
 if $USE_PARSE_MODE; then
     response=$(curl -sS -X POST "https://api.telegram.org/bot$TELEGRAM_TOKEN/sendMessage" \
